@@ -1,62 +1,62 @@
 # 🦌 DeerFlow - 2.0
 
-DeerFlow (**D**eep **E**xploration and **E**fficient **R**esearch **Flow**) is an open-source **super agent harness** that orchestrates **sub-agents**, **memory**, and **sandboxes** to do almost anything — powered by **extensible skills**.
+DeerFlow（**D**eep **E**xploration and **E**fficient **R**esearch **Flow**）是一个开源的**超级智能体运行框架**，它通过可扩展的**技能**编排**子代理**、**记忆**与**沙箱**，几乎可以完成任何任务。
 
 https://github.com/user-attachments/assets/a8bcadc4-e040-4cf2-8fda-dd768b999c18
 
 > [!NOTE]
-> **DeerFlow 2.0 is a ground-up rewrite.** It shares no code with v1. If you're looking for the original Deep Research framework, it's maintained on the [`1.x` branch](https://github.com/bytedance/deer-flow/tree/main-1.x) — contributions there are still welcome. Active development has moved to 2.0.
+> **DeerFlow 2.0 是一次从零重写。**它与 v1 没有任何代码共享。如果你在寻找原始的 Deep Research 框架，请访问 [`1.x` 分支](https://github.com/bytedance/deer-flow/tree/main-1.x) —— 仍然欢迎在那边贡献。当前主要开发已迁移到 2.0。
 
-## Offiical Website
+## 官方网站
 
-Learn more and see **real demos** on our official website.
+在官网了解更多信息并查看**真实演示**。
 
 **[deerflow.tech](https://deerflow.tech/)**
 
 ---
 
-## Table of Contents
+## 目录
 
-- [Quick Start](#quick-start)
-- [Sandbox Mode](#sandbox-mode)
-- [From Deep Research to Super Agent Harness](#from-deep-research-to-super-agent-harness)
-- [Core Features](#core-features)
-  - [Skills & Tools](#skills--tools)
-  - [Sub-Agents](#sub-agents)
-  - [Sandbox & File System](#sandbox--file-system)
-  - [Context Engineering](#context-engineering)
-  - [Long-Term Memory](#long-term-memory)
-- [Recommended Models](#recommended-models)
-- [Documentation](#documentation)
-- [Contributing](#contributing)
-- [License](#license)
-- [Acknowledgments](#acknowledgments)
-- [Star History](#star-history)
+- [快速开始](#快速开始)
+- [沙箱模式](#沙箱模式)
+- [从深度研究到超级智能体框架](#从深度研究到超级智能体框架)
+- [核心特性](#核心特性)
+  - [技能与工具](#技能与工具)
+  - [子代理](#子代理)
+  - [沙箱与文件系统](#沙箱与文件系统)
+  - [上下文工程](#上下文工程)
+  - [长期记忆](#长期记忆)
+- [推荐模型](#推荐模型)
+- [文档](#文档)
+- [贡献](#贡献)
+- [许可证](#许可证)
+- [致谢](#致谢)
+- [Star 历史](#star-历史)
 
-## Quick Start
+## 快速开始
 
-### Configuration
+### 配置
 
-1. **Clone the DeerFlow repository**
+1. **克隆 DeerFlow 仓库**
 
    ```bash
    git clone https://github.com/bytedance/deer-flow.git
    cd deer-flow
    ```
 
-2. **Generate local configuration files**
+2. **生成本地配置文件**
 
-   From the project root directory (`deer-flow/`), run:
+   在项目根目录（`deer-flow/`）运行：
 
    ```bash
    make config
    ```
 
-   This command creates local configuration files based on the provided example templates.
+   该命令会基于示例模板生成本地配置文件。
 
-3. **Configure your preferred model(s)**
+3. **配置你偏好的模型**
 
-   Edit `config.yaml` and define at least one model:
+   编辑 `config.yaml` 并至少定义一个模型：
 
    ```yaml
    models:
@@ -69,11 +69,11 @@ Learn more and see **real demos** on our official website.
        temperature: 0.7                  # Sampling temperature
    ```
 
-4. **Set API keys for your configured model(s)**
+4. **为已配置的模型设置 API Key**
 
-   Choose one of the following methods:
+   选择以下任一方式：
 
-- Option A: Edit the `.env` file in the project root (Recommended)
+- 方案 A：编辑根目录下的 `.env` 文件（推荐）
 
 
    ```bash
@@ -82,13 +82,13 @@ Learn more and see **real demos** on our official website.
    # Add other provider keys as needed
    ```
 
-- Option B: Export environment variables in your shell
+- 方案 B：在你的 shell 中导出环境变量
 
    ```bash
    export OPENAI_API_KEY=your-openai-api-key
    ```
 
-- Option C: Edit `config.yaml` directly (Not recommended for production)
+- 方案 C：直接在 `config.yaml` 中填写（生产环境不推荐）
 
    ```yaml
    models:
@@ -96,82 +96,82 @@ Learn more and see **real demos** on our official website.
        api_key: your-actual-api-key-here  # Replace placeholder
    ```
 
-### Running the Application
+### 运行应用
 
-#### Option 1: Docker (Recommended)
+#### 方案一：Docker（推荐）
 
-The fastest way to get started with a consistent environment:
+最快的启动方式，并确保环境一致性：
 
-1. **Initialize and start**:
+1. **初始化并启动**：
    ```bash
    make docker-init    # Pull sandbox image (Only once or when image updates)
    make docker-start   # Start all services and watch for code changes
    ```
 
-2. **Access**: http://localhost:2026
+2. **访问**：http://localhost:2026
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed Docker development guide.
+详细的 Docker 开发指南见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
-#### Option 2: Local Development
+#### 方案二：本地开发
 
-If you prefer running services locally:
+如果你希望在本机直接运行服务：
 
-1. **Check prerequisites**:
+1. **检查前置依赖**：
    ```bash
    make check  # Verifies Node.js 22+, pnpm, uv, nginx
    ```
 
-2. **(Optional) Pre-pull sandbox image**:
+2. **（可选）提前拉取沙箱镜像**：
    ```bash
    # Recommended if using Docker/Container-based sandbox
    make setup-sandbox
    ```
 
-3. **Start services**:
+3. **启动服务**：
    ```bash
    make dev
    ```
 
-4. **Access**: http://localhost:2026
+4. **访问**：http://localhost:2026
 
-### Advanced
-#### Sandbox Mode
+### 高级
+#### 沙箱模式
 
-DeerFlow supports multiple sandbox execution modes:
-- **Local Execution** (runs sandbox code directly on the host machine)
-- **Docker Execution** (runs sandbox code in isolated Docker containers)
-- **Docker Execution with Kubernetes** (runs sandbox code in Kubernetes pods via provisioner service)
+DeerFlow 支持多种沙箱执行方式：
+- **本地执行**（在宿主机直接运行沙箱代码）
+- **Docker 执行**（在隔离的 Docker 容器中运行）
+- **Kubernetes + Docker 执行**（通过 provisioner 服务在 K8s Pod 中运行）
 
-See the [Sandbox Configuration Guide](backend/docs/CONFIGURATION.md#sandbox) to configure your preferred mode.
+可参考 [沙箱配置指南](backend/docs/CONFIGURATION.md#sandbox) 配置你的模式。
 
-#### MCP Server
+#### MCP 服务器
 
-DeerFlow supports configurable MCP servers and skills to extend its capabilities.
-See the [MCP Server Guide](backend/docs/MCP_SERVER.md) for detailed instructions.
+DeerFlow 支持可配置的 MCP 服务器与技能扩展能力。
+详细说明见 [MCP 服务器指南](backend/docs/MCP_SERVER.md)。
 
-## From Deep Research to Super Agent Harness
+## 从深度研究到超级智能体框架
 
-DeerFlow started as a Deep Research framework — and the community ran with it. Since launch, developers have pushed it far beyond research: building data pipelines, generating slide decks, spinning up dashboards, automating content workflows. Things we never anticipated.
+DeerFlow 起初是一个 Deep Research 框架——但社区把它带到了更远的地方。自发布以来，开发者用它构建数据流水线、生成幻灯片、搭建仪表盘、自动化内容流程，远超我们的预期。
 
-That told us something important: DeerFlow wasn't just a research tool. It was a **harness** — a runtime that gives agents the infrastructure to actually get work done.
+这让我们意识到：DeerFlow 不只是研究工具，它是一个**运行框架**——为智能体提供真正能“干活”的基础设施。
 
-So we rebuilt it from scratch.
+于是我们从零重写。
 
-DeerFlow 2.0 is no longer a framework you wire together. It's a super agent harness — batteries included, fully extensible. Built on LangGraph and LangChain, it ships with everything an agent needs out of the box: a filesystem, memory, skills, sandboxed execution, and the ability to plan and spawn sub-agents for complex, multi-step tasks.
+DeerFlow 2.0 不再是需要你自行拼装的框架，而是一个开箱即用、完全可扩展的超级智能体运行框架。它基于 LangGraph 和 LangChain，内置文件系统、记忆、技能、沙箱执行以及复杂任务的规划与子代理能力。
 
-Use it as-is. Or tear it apart and make it yours.
+你可以直接使用，也可以按需拆改。
 
-## Core Features
+## 核心特性
 
-### Skills & Tools
+### 技能与工具
 
-Skills are what make DeerFlow do *almost anything*.
+技能让 DeerFlow 能做*几乎所有事情*。
 
-A standard Agent Skill is a structured capability module — a Markdown file that defines a workflow, best practices, and references to supporting resources. DeerFlow ships with built-in skills for research, report generation, slide creation, web pages, image and video generation, and more. But the real power is extensibility: add your own skills, replace the built-in ones, or combine them into compound workflows.
+标准的 Agent Skill 是结构化能力模块——一个定义流程、最佳实践与参考资源的 Markdown 文件。DeerFlow 内置研究、报告生成、幻灯片制作、网页生成、图像/视频生成等技能。更强大的是可扩展性：你可以添加自定义技能、替换内置技能，或把多个技能组合成复合流程。
 
-Skills are loaded progressively — only when the task needs them, not all at once. This keeps the context window lean and makes DeerFlow work well even with token-sensitive models.
+技能按需渐进加载——只有在任务需要时才加载，这能显著节省上下文窗口，适配更“省 token”的模型。
 
-Tools follow the same philosophy. DeerFlow comes with a core toolset — web search, web fetch, file operations, bash execution — and supports custom tools via MCP servers and Python functions. Swap anything. Add anything.
+工具也采用相同理念。DeerFlow 提供核心工具集——网页搜索、网页抓取、文件操作、bash 执行等，并支持通过 MCP 服务器和 Python 函数扩展自定义工具。你可以替换或新增任何工具。
 
 ```
 # Paths inside the sandbox container
@@ -186,21 +186,21 @@ Tools follow the same philosophy. DeerFlow comes with a core toolset — web sea
 └── your-custom-skill/SKILL.md      ← yours
 ```
 
-### Sub-Agents
+### 子代理
 
-Complex tasks rarely fit in a single pass. DeerFlow decomposes them.
+复杂任务很难一次完成，DeerFlow 会将其拆解。
 
-The lead agent can spawn sub-agents on the fly — each with its own scoped context, tools, and termination conditions. Sub-agents run in parallel when possible, report back structured results, and the lead agent synthesizes everything into a coherent output.
+主代理可以随时创建子代理——每个子代理拥有自己的上下文、工具与终止条件。子代理在可行时并行执行，产出结构化结果后再由主代理统一综合。
 
-This is how DeerFlow handles tasks that take minutes to hours: a research task might fan out into a dozen sub-agents, each exploring a different angle, then converge into a single report — or a website — or a slide deck with generated visuals. One harness, many hands.
+这让 DeerFlow 能处理耗时分钟到小时的任务：一次研究可能分发给十多个子代理，各自探索不同角度，最后汇总成一份报告、一个网站或一套带可视化的幻灯片。一个框架，多只手。
 
-### Sandbox & File System
+### 沙箱与文件系统
 
-DeerFlow doesn't just *talk* about doing things. It has its own computer.
+DeerFlow 不只是“说它能做”，它真的有自己的电脑。
 
-Each task runs inside an isolated Docker container with a full filesystem — skills, workspace, uploads, outputs. The agent reads, writes, and edits files. It executes bash commands and codes. It views images. All sandboxed, all auditable, zero contamination between sessions.
+每个任务运行在隔离的 Docker 容器中，拥有完整文件系统——技能、工作区、上传与输出。代理可以读写和编辑文件、执行 bash 命令、生成代码、查看图片。全程沙箱化、可审计、会话间零污染。
 
-This is the difference between a chatbot with tool access and an agent with an actual execution environment.
+这就是“可用工具的聊天机器人”和“拥有实际执行环境的智能体”之间的本质区别。
 
 ```
 # Paths inside the sandbox container
@@ -210,62 +210,62 @@ This is the difference between a chatbot with tool access and an agent with an a
 └── outputs/          ← final deliverables
 ```
 
-### Context Engineering
+### 上下文工程
 
-**Isolated Sub-Agent Context**: Each sub-agent runs in its own isolated context. This means that the sub-agent will not be able to see the context of the main agent or other sub-agents. This is important to ensure that the sub-agent is able to focus on the task at hand and not be distracted by the context of the main agent or other sub-agents.
+**子代理隔离上下文**：每个子代理运行在完全隔离的上下文中，无法看到主代理或其他子代理的上下文，确保它能专注于自己的任务，不被其他上下文干扰。
 
-**Summarization**: Within a session, DeerFlow manages context aggressively — summarizing completed sub-tasks, offloading intermediate results to the filesystem, compressing what's no longer immediately relevant. This lets it stay sharp across long, multi-step tasks without blowing the context window.
+**摘要与压缩**：在单次会话内，DeerFlow 会积极管理上下文——总结已完成的子任务，将中间结果写入文件系统，压缩当前不再关键的信息，从而在长链条任务里保持清晰而不爆上下文。
 
-### Long-Term Memory
+### 长期记忆
 
-Most agents forget everything the moment a conversation ends. DeerFlow remembers.
+大多数智能体在对话结束后会遗忘一切，但 DeerFlow 会记住。
 
-Across sessions, DeerFlow builds a persistent memory of your profile, preferences, and accumulated knowledge. The more you use it, the better it knows you — your writing style, your technical stack, your recurring workflows. Memory is stored locally and stays under your control.
+跨会话持久化记忆会保存你的个人资料、偏好和积累的知识。使用得越多，它越懂你——你的写作风格、技术栈和常用流程。记忆存储在本地，完全由你掌控。
 
-## Recommended Models
+## 推荐模型
 
-DeerFlow is model-agnostic — it works with any LLM that implements the OpenAI-compatible API. That said, it performs best with models that support:
+DeerFlow 对模型无绑定——只要兼容 OpenAI 风格 API 的 LLM 都可以使用。最佳体验来自具备以下能力的模型：
 
-- **Long context windows** (100k+ tokens) for deep research and multi-step tasks
-- **Reasoning capabilities** for adaptive planning and complex decomposition
-- **Multimodal inputs** for image understanding and video comprehension
-- **Strong tool-use** for reliable function calling and structured outputs
+- **长上下文窗口**（10 万+ token）用于深度研究与多步骤任务
+- **推理能力**用于自适应规划与复杂拆解
+- **多模态输入**用于图像理解与视频解析
+- **强工具调用能力**用于可靠的函数调用与结构化输出
 
-## Documentation
+## 文档
 
-- [Contributing Guide](CONTRIBUTING.md) - Development environment setup and workflow
-- [Configuration Guide](backend/docs/CONFIGURATION.md) - Setup and configuration instructions
-- [Architecture Overview](backend/CLAUDE.md) - Technical architecture details
-- [Backend Architecture](backend/README.md) - Backend architecture and API reference
+- [贡献指南](CONTRIBUTING.md) - 开发环境配置与工作流程
+- [配置指南](backend/docs/CONFIGURATION.md) - 安装与配置说明
+- [架构概览](backend/CLAUDE.md) - 技术架构细节
+- [后端架构](backend/README.md) - 后端架构与 API 参考
 
-## Contributing
+## 贡献
 
-We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, workflow, and guidelines.
+欢迎贡献！请参阅 [CONTRIBUTING.md](CONTRIBUTING.md) 获取开发环境、工作流程与贡献规范。
 
-## License
+## 许可证
 
-This project is open source and available under the [MIT License](./LICENSE).
+本项目为开源项目，遵循 [MIT License](./LICENSE)。
 
-## Acknowledgments
+## 致谢
 
-DeerFlow is built upon the incredible work of the open-source community. We are deeply grateful to all the projects and contributors whose efforts have made DeerFlow possible. Truly, we stand on the shoulders of giants.
+DeerFlow 建立在开源社区的卓越成果之上。我们由衷感谢所有为 DeerFlow 贡献过的项目与作者，真正“站在巨人的肩膀上”。
 
-We would like to extend our sincere appreciation to the following projects for their invaluable contributions:
+特别感谢以下项目的重大贡献：
 
-- **[LangChain](https://github.com/langchain-ai/langchain)**: Their exceptional framework powers our LLM interactions and chains, enabling seamless integration and functionality.
-- **[LangGraph](https://github.com/langchain-ai/langgraph)**: Their innovative approach to multi-agent orchestration has been instrumental in enabling DeerFlow's sophisticated workflows.
+- **[LangChain](https://github.com/langchain-ai/langchain)**：其出色框架支撑了 LLM 交互与链式调用，实现无缝集成。
+- **[LangGraph](https://github.com/langchain-ai/langgraph)**：其在多智能体编排方面的创新使 DeerFlow 的复杂工作流成为可能。
 
-These projects exemplify the transformative power of open-source collaboration, and we are proud to build upon their foundations.
+这些项目体现了开源协作的巨大力量，我们很荣幸构建在其基础之上。
 
-### Key Contributors
+### 关键贡献者
 
-A heartfelt thank you goes out to the core authors of `DeerFlow`, whose vision, passion, and dedication have brought this project to life:
+衷心感谢 `DeerFlow` 的核心作者，他们的愿景、热情与投入让项目得以落地：
 
 - **[Daniel Walnut](https://github.com/hetaoBackend/)**
 - **[Henry Li](https://github.com/magiccube/)**
 
-Your unwavering commitment and expertise have been the driving force behind DeerFlow's success. We are honored to have you at the helm of this journey.
+你们的坚定投入与专业能力，是 DeerFlow 成功的关键驱动力。能够与你们同行，我们深感荣幸。
 
-## Star History
+## Star 历史
 
 [![Star History Chart](https://api.star-history.com/svg?repos=bytedance/deer-flow&type=Date)](https://star-history.com/#bytedance/deer-flow&Date)
